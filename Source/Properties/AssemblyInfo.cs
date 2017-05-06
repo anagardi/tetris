@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Tetris")]
-[assembly: AssemblyDescription("This is free and open source software. Tetris theme song played and recorded by Rafayel Gardishyan.")]
+[assembly: AssemblyDescription("This is free and open source software. The Tetris theme song was played and recorded by Rafayel Gardishyan.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Tetris")]
