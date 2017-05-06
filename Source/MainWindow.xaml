@@ -1,0 +1,197 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:properties="clr-namespace:Tetris.Properties"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Tetris.MainWindow" 
+        Icon="Images/Tetris.ico" 
+        Title="Tetris" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Width="420" 
+        Height="540" 
+        PreviewKeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
+
+    <Window.Background>
+        <ImageBrush ImageSource="Images/background.png" Stretch="Fill"/>
+    </Window.Background>
+
+    <Window.Resources>
+        <Style x:Key="ButtonIsEnabled" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.25"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel LastChildFill="False">
+        <!--#region Menu-->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Name="MenuItemStart" Header="{Binding  Path=StateButtonHeader, UpdateSourceTrigger=PropertyChanged}" InputGestureText="Ctrl+G" ToolTip="{Binding  Path=StateButtonToolTip, UpdateSourceTrigger=PropertyChanged}" Click="MenuItemStart_Click">
+                    <MenuItem.Icon>
+                        <Image Source="{Binding  Path=StateButton, UpdateSourceTrigger=PropertyChanged}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Reset" InputGestureText="Ctrl+R" Click="MenuItemReset_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Images/reset.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" Click="MenuItemExit_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Images/exit.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Name="MenuItemOptions" Header="_Options..." Click="MenuItemOptions_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Images/options.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_View Help" Click="MenuItemHelp_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Images/help.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_About this program" Click="MenuItemAbout_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Images/about.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <!--#endregion-->
+        <!--#region Main screen-->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <!--#region Options-->
+            <StackPanel Orientation="Vertical" Background="Black" Height="450" Margin="5,5,0,5">
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <Button Width="40" Height="25" Padding="2"  Background="MediumAquamarine"
+                        HorizontalContentAlignment="Center" PreviewMouseDown="StateButton_Click"
+                        ToolTip="{Binding  Path=StateButtonToolTip, UpdateSourceTrigger=PropertyChanged}">
+                        <Image Source="{Binding  Path=StateButton, UpdateSourceTrigger=PropertyChanged}" />
+                    </Button>
+                    <Button Name="PlaySoundButton" Width="25" Height="25" Padding="2" Margin="5,0,0,0" 
+                            Background="MediumAquamarine" ToolTip="{Binding  Path=PlaySoundButtonToolTip, UpdateSourceTrigger=PropertyChanged}" 
+                            Click="PlaySoundButton_Click">
+                        <Image Source="{Binding  Path=PlaySoundImage, UpdateSourceTrigger=PropertyChanged}" />
+                    </Button>
+                </StackPanel>
+                <Label Width="90" Height="25" Margin="0,20,0,5" Background="Black" Foreground="Orange" FontSize="11" FontFamily="Verdana" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center">Best Score</Label>
+                <Label Width="90" Height="30" Background="Black" Foreground="Orange" FontSize="14" FontFamily="Verdana" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Content="{Binding  Path=BestScore, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Width="90" Height="25" Foreground="Wheat" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center">Score</Label>
+                <Label Width="90" Height="30" Foreground="Wheat" FontSize="20" FontFamily="Verdana" VerticalContentAlignment="Top" HorizontalContentAlignment="Center">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Content" Value="{Binding  Path=Score, UpdateSourceTrigger=PropertyChanged}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=StateButton}" Value="Images/start.png">
+                                    <Setter Property="Content" Value="" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+
+                <Label Width="90" Height="25" Foreground="Wheat" VerticalContentAlignment="Bottom"  HorizontalContentAlignment="Center">Lines</Label>
+                <Label Width="90" Height="30" Foreground="Wheat" FontSize="20" FontFamily="Verdana" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" >
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Content" Value="{Binding  Path=LinesCount, UpdateSourceTrigger=PropertyChanged}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=StateButton}" Value="Images/start.png">
+                                    <Setter Property="Content" Value="" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <StackPanel Visibility="{Binding  Path=ShowNext, UpdateSourceTrigger=PropertyChanged}">
+                    <Label Width="90" Height="30" Foreground="Wheat" VerticalContentAlignment="Center"  HorizontalContentAlignment="Center">Next</Label>
+                    <Canvas Name="NextFigurePreview" Width="90" Height="70"/>
+                </StackPanel>
+                <StackPanel Margin="5,5,5,5" HorizontalAlignment="Center">
+                    <Button Name="ButtonRotateLeft" Width="25" Height="25" Padding="2" Background="MediumAquamarine" ToolTip="Rotate right!" IsEnabled="False" Style="{StaticResource ButtonIsEnabled}" Click="ButtonRotateLeft_Click">
+                        <Image Source="Images/up.png" />
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Name="ButtonMoveLeft" Width="25" Height="25" Padding="2" Background="MediumAquamarine" ToolTip="Move left!" IsEnabled="False" Style="{StaticResource ButtonIsEnabled}" Click="ButtonMoveLeft_Click">
+                            <Image Source="Images/left.png" />
+                        </Button>
+                        <Button Name="ButtonMoveDown" Width="25" Height="25" Margin="2" Padding="2" Background="MediumAquamarine" ToolTip="Move down!" IsEnabled="False" Style="{StaticResource ButtonIsEnabled}" Click="ButtonMoveDown_Click"/>
+                        <Button Name="ButtonMoveRight" Width="25" Height="25" Padding="2" Background="MediumAquamarine" ToolTip="Move right!" IsEnabled="False" Style="{StaticResource ButtonIsEnabled}" Click="ButtonMoveRight_Click">
+                            <Image Source="Images/right.png" />
+                        </Button>
+                    </StackPanel>
+                    <Button  Name="ButtonRotateRight" Width="25" Height="25" Padding="2" Background="MediumAquamarine" ToolTip="Rotate left!" IsEnabled="False" Style="{StaticResource ButtonIsEnabled}" Click="ButtonRotateRight_Click">
+                        <Image Source="Images/down.png" />
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <!--#endregion-->
+            <!--#region Main board-->
+            <Grid Width="300" Height="450" Margin="5" Background="Black">
+                <Canvas Name="Board" Width="300" Height="450"/>
+                <Canvas Width="300" Height="450" Visibility="{Binding  Path=ShowGridLines, UpdateSourceTrigger=PropertyChanged}">
+                    <Canvas.Background>
+                        <DrawingBrush TileMode="Tile" Viewport="0,0,25,25" ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,25,25" />
+                                    </GeometryDrawing.Geometry>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Gray" Thickness="0.1" />
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.Background>
+                </Canvas>
+                <StackPanel Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding  Path=ShowGameOver, UpdateSourceTrigger=PropertyChanged}" Opacity="0.7">
+                    <TextBlock Height="55" Foreground="WhiteSmoke" FontSize="40" FontFamily="Verdana" FontWeight="Bold"  HorizontalAlignment="Center" Text="Game over!"/>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" Background="MediumAquamarine">
+                        <Label Height="30" Width="100" Foreground="Gray" FontSize="16" FontFamily="Impact"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Score"/>
+                        <Label Height="30" Width="150" Foreground="Gray" FontSize="16" FontFamily="Impact"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="{Binding  Path=Score,  UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" Background="MediumAquamarine">
+                        <Label Height="30" Width="100" Foreground="Gray" FontSize="16" FontFamily="Impact"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Lines"/>
+                        <Label Height="30" Width="150" Foreground="Gray" FontSize="16" FontFamily="Impact" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="{Binding  Path=LinesCount,  UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" Background="MediumAquamarine">
+                        <Label Height="30" Width="100" Foreground="Gray" FontSize="16" FontFamily="Impact"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Time"/>
+                        <Label Height="30" Width="150" Foreground="Gray" FontSize="16" FontFamily="Impact" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="{Binding  Path=TimerValue,  UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <!--#endregion-->
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region Statusbar-->
+        <StatusBar DockPanel.Dock="Top">
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <Label  Height="30" Margin="0,0,4,0" Foreground="Black" FontSize="10" FontFamily="Verdana">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Content" Value="{Binding  Path=TimerValue, UpdateSourceTrigger=PropertyChanged}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=StateButton}" Value="Images/start.png">
+                                    <Setter Property="Content" Value="" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </StatusBarItem>
+        </StatusBar>
+        <!--#endregion-->
+    </DockPanel>
+</Window>

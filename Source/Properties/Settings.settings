@@ -1,0 +1,72 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Tetris.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="StateButtonInitialValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Images/start.png</Value>
+    </Setting>
+    <Setting Name="BestScoreInitialValue" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ScoreInitialValue" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TimerInitialValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">00:00:00</Value>
+    </Setting>
+    <Setting Name="StateButtonPauseValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Images/pause.png</Value>
+    </Setting>
+    <Setting Name="StateButtonToolTipInitialValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Press to start the game!</Value>
+    </Setting>
+    <Setting Name="StateButtonToolTipPausedValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Press to pause the game!</Value>
+    </Setting>
+    <Setting Name="StateButtonToolTipContinueValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Press to continue the game!</Value>
+    </Setting>
+    <Setting Name="DefaultUnits" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="SpeedNormal" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="ShowGridLines" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowNextFigure" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PlaySound" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WithAcceleration" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SpeedWithAcceleration" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="PlaySoundImage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Images/playsound.png</Value>
+    </Setting>
+    <Setting Name="MuteImage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Images/mute.png</Value>
+    </Setting>
+    <Setting Name="PlaySoundButtonToolTip" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Press to mute!</Value>
+    </Setting>
+    <Setting Name="MuteButtonToolTip" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Press to play sound!</Value>
+    </Setting>
+    <Setting Name="TetrisUnits" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
+    <Setting Name="StateButtonContinueValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Images/continue.png</Value>
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
